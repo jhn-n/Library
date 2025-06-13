@@ -1,13 +1,25 @@
 "use strict";
 
+const table = document.querySelector(".booktable");
+const resetButton = document.querySelector("#reset");
+const dialog = document.querySelector("dialog");
+const addBookButton = document.querySelector("#addBook");
+const inputTitle = document.querySelector("#title");
+const inputAuthor = document.querySelector("#author");
+const inputYear = document.querySelector("#year");
+const inputGenre = document.querySelector("#genre");
+const inputRead = document.querySelector("#read");
+const submitButton = document.querySelector("#submitButton");
+const cancelButton = document.querySelector("#cancelButton");
+
 const myLibrary = [];
 
-function Book(title, author, date, genre) {
+function Book(title, author, date, genre, read) {
 	this.title = title;
 	this.author = author;
 	this.date = date;
 	this.genre = genre;
-	this.read = false;
+	this.read = read;
 	this.id = crypto.randomUUID();
 }
 
@@ -15,8 +27,26 @@ Book.prototype.toggleReadStatus = function () {
 	this.read = !this.read;
 };
 
-function addBook(title, author, date, genre) {
-	const newBook = new Book(title, author, date, genre);
+resetButton.addEventListener("click", setupLibrary);
+
+addBookButton.addEventListener("click", () => {
+	dialog.show();
+})
+
+submitButton.addEventListener("click", (event) => {
+	addBook(inputTitle.value, inputAuthor.value, inputYear.value, inputGenre.value, inputRead.checked);
+	event.preventDefault();
+	document.getElementById("new-book").reset();
+	dialog.close();
+});
+
+cancelButton.addEventListener("click", () => {
+	document.getElementById("new-book").reset();
+	dialog.close();
+});
+
+function addBook(title, author, date, genre, read) {
+	const newBook = new Book(title, author, date, genre, read);
 	myLibrary.push(newBook);
     updateTable();
 }
@@ -36,17 +66,14 @@ function toggleRead(bookId) {
 
 function setupLibrary() {
 	myLibrary.length = 0;
-	addBook("Pride and Prejudice", "Jane Austen", 1813, "Romance");
-	addBook("The Great Gatsby", "F. Scott Fitzgerald", 1925, "Romance");
-	addBook("To Kill a Mockingbird", "Harper Lee", 1960, "Southern");
-	addBook("1984", "George Orwell", 1949, "Dystopia");
-	addBook("Frankenstein", "Mary Shelley", 1818, "Horror");
-	addBook("Crime and Punishment", "Fyodor Dostoevsky", 1866, "Crime");
+	addBook("Pride and Prejudice", "Jane Austen", 1813, "Romance", true);
+	addBook("The Great Gatsby", "F. Scott Fitzgerald", 1925, "Romance", true);
+	addBook("To Kill a Mockingbird", "Harper Lee", 1960, "Southern", false);
+	addBook("1984", "George Orwell", 1949, "Dystopia", false);
+	addBook("Frankenstein", "Mary Shelley", 1818, "Horror", false);
+	addBook("Crime and Punishment", "Fyodor Dostoevsky", 1866, "Crime", false);
 }
 
-const table = document.querySelector(".booktable");
-const reset = document.querySelector("#reset");
-reset.addEventListener("click", setupLibrary);
 
 function updateTable() {
 	while (table.childElementCount > 1) {

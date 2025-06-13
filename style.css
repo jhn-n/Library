@@ -30,8 +30,8 @@ body {
     "sidebar main";
 }
 
-div {
-    border: 2px darkgreen solid;
+.header, .reset {
+    border-bottom: 2px darkgreen solid;
 }
 
 table {
@@ -61,6 +61,8 @@ textarea {
 
 .sidebar {
     grid-area: sidebar;
+    padding: 1rem 2rem;
+    border-right: 1px darkgreen solid;
 }
 
 .main {
@@ -71,4 +73,25 @@ textarea {
     grid-area: reset;
     display: grid;
     place-content: center;
+}
+
+form input {
+  border: #bc9662 solid 1px;
+  border-radius: 5px;
+  padding: 10px 0px 5px 15px;
+}
+
+form > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.radioButtons, .buttons {
+    margin-top: 0.5rem;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+form button {
+    margin-top: 1rem;
 }
