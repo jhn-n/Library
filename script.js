@@ -14,27 +14,35 @@ const cancelButton = document.querySelector("#cancelButton");
 
 const myLibrary = [];
 
-function Book(title, author, date, genre, read) {
-	this.title = title;
-	this.author = author;
-	this.date = date;
-	this.genre = genre;
-	this.read = read;
-	this.id = crypto.randomUUID();
-}
+class Book {
+	constructor(title, author, date, genre, read) {
+		this.title = title;
+		this.author = author;
+		this.date = date;
+		this.genre = genre;
+		this.read = read;
+		this.id = crypto.randomUUID();
+	}
 
-Book.prototype.toggleReadStatus = function () {
-	this.read = !this.read;
-};
+	toggleReadStatus() {
+		this.read = !this.read;
+	}
+}
 
 resetButton.addEventListener("click", setupLibrary);
 
 addBookButton.addEventListener("click", () => {
 	dialog.show();
-})
+});
 
 submitButton.addEventListener("click", (event) => {
-	addBook(inputTitle.value, inputAuthor.value, inputYear.value, inputGenre.value, inputRead.checked);
+	addBook(
+		inputTitle.value,
+		inputAuthor.value,
+		inputYear.value,
+		inputGenre.value,
+		inputRead.checked
+	);
 	event.preventDefault();
 	document.getElementById("new-book").reset();
 	dialog.close();
@@ -48,7 +56,7 @@ cancelButton.addEventListener("click", () => {
 function addBook(title, author, date, genre, read) {
 	const newBook = new Book(title, author, date, genre, read);
 	myLibrary.push(newBook);
-    updateTable();
+	updateTable();
 }
 
 function removeBook(bookId) {
@@ -56,12 +64,12 @@ function removeBook(bookId) {
 	if (bookIndex > -1) {
 		myLibrary.splice(bookIndex, 1);
 	}
-    updateTable();
+	updateTable();
 }
 
 function toggleRead(bookId) {
 	myLibrary.find((e) => e.id === bookId).toggleReadStatus();
-    updateTable();
+	updateTable();
 }
 
 function setupLibrary() {
@@ -73,7 +81,6 @@ function setupLibrary() {
 	addBook("Frankenstein", "Mary Shelley", 1818, "Horror", false);
 	addBook("Crime and Punishment", "Fyodor Dostoevsky", 1866, "Crime", false);
 }
-
 
 function updateTable() {
 	while (table.childElementCount > 1) {
@@ -99,12 +106,12 @@ function updateTable() {
 
 		toggleReadButton.innerText = "toggle";
 		toggleReadButton.addEventListener("click", () => toggleRead(e.id));
-        
+
 		removeButton.innerText = "remove";
 		removeButton.addEventListener("click", () => removeBook(e.id));
-        
-        readButtonCell.appendChild(toggleReadButton);
-        removeButtonCell.appendChild(removeButton);
+
+		readButtonCell.appendChild(toggleReadButton);
+		removeButtonCell.appendChild(removeButton);
 		tableRow.appendChild(title);
 		tableRow.appendChild(author);
 		tableRow.appendChild(date);
